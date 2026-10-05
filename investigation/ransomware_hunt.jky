@@ -1,0 +1,16 @@
+# JOCKY Forensic Script - Ransomware Rapid Triage
+CASE "RANSOMWARE_TRIAGE_042"
+
+files = host.files.search("./investigation/evidence")
+
+FOR file IN files {
+    file.hash("SHA256")
+}
+
+connections = host.network.connections()
+
+evidence.add(files)
+evidence.add(connections)
+evidence.hash()
+
+report.generate()

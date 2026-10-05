@@ -1,0 +1,4 @@
+This is a confidential forensic investigation case notes file.
+Case: INCIDENT_001
+Suspected unauthorized binary execution and C2 beaconing observed.
+Target evidence stored in directory.

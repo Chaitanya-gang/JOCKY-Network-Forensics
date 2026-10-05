@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOCKY Forensic IDE & Interactive Execution Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="navbar">
+            <div class="nav-left">
+                <div class="brand">
+                    <span class="brand-icon">⚡</span>
+                    <span class="brand-name">JOCKY</span>
+                    <span class="version-tag">v0.1.0-alpha</span>
+                </div>
+                <div class="engine-badge">
+                    <span class="status-dot pulse"></span>
+                    <span class="engine-text">FORENSIC RUNTIME ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="nav-center">
+                <div class="control-group">
+                    <label for="scenarioSelect">SCENARIO:</label>
+                    <select id="scenarioSelect" class="cyber-select">
+                        <option value="case" selected>INCIDENT_001 Triage (Core Demo)</option>
+                        <option value="ransomware_hunt">Ransomware File Sweep</option>
+                        <option value="fleet_sweep">Enterprise Multi-Host Persistence</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="hostSelect">TARGET:</label>
+                    <select id="hostSelect" class="cyber-select">
+                        <option value="LAB-WIN-01">LAB-WIN-01 (Local Host)</option>
+                        <option value="LAB-WIN-02">LAB-WIN-02 (Server 2022)</option>
+                        <option value="PROD-UBUNTU-01">PROD-UBUNTU-01 (Linux)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button id="btnRun" class="cyber-btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    <span>RUN JOCKY</span>
+                </button>
+                <button id="btnMultiRun" class="cyber-btn btn-secondary">
+                    <span class="btn-icon">🌐</span>
+                    <span>FLEET SWEEP</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Left Column: Code Editor & Target Files -->
+            <section class="panel editor-panel">
+                <div class="panel-header">
+                    <div class="tab-indicator">
+                        <span class="file-icon">📄</span>
+                        <span id="currentFilename" class="active-filename">case.jky</span>
+                        <span class="lang-tag">JOCKY SCRIPT</span>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="btnResetCode" class="icon-btn" title="Reset Code">↺ Reset</button>
+                        <button id="btnClearLogs" class="icon-btn" title="Clear Console">⌫ Clear</button>
+                    </div>
+                </div>
+
+                <div class="editor-body">
+                    <div class="editor-wrapper">
+                        <div class="line-numbers" id="lineNumbers">1</div>
+                        <textarea id="codeEditor" spellcheck="false" placeholder="Write JOCKY script here..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Evidence Folder Preview Drawer -->
+                <div class="evidence-drawer">
+                    <div class="drawer-header">
+                        <span>📁 EVIDENCE DIRECTORY (./investigation/evidence)</span>
+                        <span id="evidenceFileCount" class="count-badge">7 files</span>
+                    </div>
+                    <div class="evidence-file-list" id="evidenceFileList">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Visual Pipeline, Results & Inspector -->
+            <section class="panel inspector-panel">
+                <!-- Visual Pipeline Stage Nodes -->
+                <div class="pipeline-card">
+                    <div class="pipeline-title">CRYPTOGRAPHIC FORENSIC EXECUTION PIPELINE</div>
+                    <div class="pipeline-nodes" id="pipelineNodes">
+                        <div class="p-node" id="node-script">
+                            <div class="node-badge">1</div>
+                            <div class="node-name">Script</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-lexer">
+                            <div class="node-badge">2</div>
+                            <div class="node-name">Tokenizer</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-parser">
+                            <div class="node-badge">3</div>
+                            <div class="node-name">Parser</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-policy">
+                            <div class="node-badge">4</div>
+                            <div class="node-name">Policy Check</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-exec">
+                            <div class="node-badge">5</div>
+                            <div class="node-name">Telemetry</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-vault">
+                            <div class="node-badge">6</div>
+                            <div class="node-name">Evidence Vault</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-hash">
+                            <div class="node-badge">7</div>
+                            <div class="node-name">SHA-256 Seal</div>
+                        </div>
+                        <div class="p-connector"></div>
+                        <div class="p-node" id="node-report">
+                            <div class="node-badge">8</div>
+                            <div class="node-name">Report</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inspector Tabs -->
+                <div class="inspector-tabs">
+                    <button class="i-tab active" data-tab="console">Live Console</button>
+                    <button class="i-tab" data-tab="evidence">Evidence Items (<span id="tabItemCount">0</span>)</button>
+                    <button class="i-tab" data-tab="record">Execution Record</button>
+                    <button class="i-tab" data-tab="fleet">Multi-Host Fleet</button>
+                    <button class="i-tab" data-tab="report">Forensic Report</button>
+                </div>
+
+                <div class="inspector-content">
+                    <!-- Tab 1: Live Console -->
+                    <div class="tab-pane active" id="tab-console">
+                        <div class="terminal" id="terminalLog">
+                            <div class="term-line info">> JOCKY Interactive Studio v0.1 initialized.</div>
+                            <div class="term-line info">> Select a scenario or write JOCKY code, then click [RUN JOCKY].</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Evidence Items Table -->
+                    <div class="tab-pane" id="tab-evidence">
+                        <div class="filter-bar">
+                            <input type="text" id="evidenceFilter" placeholder="Filter findings (e.g. .exe, chrome, 443)..." class="cyber-input">
+                            <div class="btn-group">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="file">Files</button>
+                                <button class="filter-btn" data-filter="process">Processes</button>
+                                <button class="filter-btn" data-filter="network_connection">Network</button>
+                            </div>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="cyber-table" id="evidenceTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Category</th>
+                                        <th>Details</th>
+                                        <th>SHA-256 Digest</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="evidenceTableBody">
+                                    <tr><td colspan="5" class="empty-state">No evidence generated yet. Click [RUN JOCKY] to execute.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Execution Record Card -->
+                    <div class="tab-pane" id="tab-record">
+                        <div class="record-container" id="recordContainer">
+                            <div class="empty-state">Run script to generate signed cryptographic execution certificate.</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Multi-Host Fleet Grid -->
+                    <div class="tab-pane" id="tab-fleet">
+                        <div class="fleet-header">
+                            <div class="fleet-title">CENTRALIZED MULTI-ENDPOINT EXECUTION MATRIX</div>
+                            <button id="btnRunFleetDirect" class="cyber-btn btn-sm">Execute Across All 3 Hosts</button>
+                        </div>
+                        <div class="fleet-cards" id="fleetCards">
+                            <!-- Populated dynamically -->
+                            <div class="empty-state">Click [FLEET SWEEP] to orchestrate execution across WIN-01, WIN-02, and UBUNTU-01.</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 5: Generated Forensic Report -->
+                    <div class="tab-pane" id="tab-report">
+                        <div class="report-controls">
+                            <span id="reportStatusText">Report Ready</span>
+                            <div class="report-actions">
+                                <a id="downloadJsonBtn" class="cyber-btn btn-sm" download="investigation_report.json">Download JSON</a>
+                                <a id="downloadHtmlBtn" class="cyber-btn btn-sm" download="investigation_report.html">Download HTML</a>
+                                <button id="btnOpenNewTab" class="cyber-btn btn-sm">Open in New Tab</button>
+                            </div>
+                        </div>
+                        <div class="report-preview-frame">
+                            <iframe id="reportFrame" src="about:blank"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

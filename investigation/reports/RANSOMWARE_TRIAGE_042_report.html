@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOCKY Forensic Investigation Report - RANSOMWARE_TRIAGE_042</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0a0d14;
+            --bg-card: #111726;
+            --bg-card-hover: #162035;
+            --border: #1e293b;
+            --border-accent: #00f0ff;
+            --cyan: #00f0ff;
+            --green: #00ff9d;
+            --yellow: #ffb800;
+            --red: #ff3366;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            padding: 30px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(0, 255, 157, 0.05) 100%);
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 24px 30px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo-area h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+        .logo-badge {
+            background: var(--cyan);
+            color: #000;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 4px;
+            font-family: var(--font-mono);
+        }
+        .status-badge {
+            background: rgba(0, 255, 157, 0.15);
+            border: 1px solid var(--green);
+            color: var(--green);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 800px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .card h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cyan);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .kv-table {
+            width: 100%;
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+        .kv-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .kv-key {
+            color: var(--text-muted);
+            width: 38%;
+        }
+        .kv-val {
+            color: #ffffff;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        .hash-tag {
+            background: #0d131f;
+            border: 1px solid #22324f;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--cyan);
+            font-size: 11px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+        .stat-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--cyan);
+            font-family: var(--font-mono);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #1e293b;
+            color: var(--cyan);
+            border-color: var(--cyan);
+        }
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-align: left;
+        }
+        table.data-table th {
+            background: #0f1420;
+            padding: 12px 14px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        table.data-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: var(--text-main);
+        }
+        table.data-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+        .badge-suspicious {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--red);
+            border: 1px solid var(--red);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-family: var(--font-mono);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-area">
+                <h1>JOCKY FORENSIC ENGINE <span class="logo-badge">v0.1</span></h1>
+                <div class="subtitle">AUTOMATED CYBER INVESTIGATION & EVIDENCE AUDIT REPORT</div>
+            </div>
+            <div class="status-badge">
+                <span>🛡️</span> VERIFIED AUDIT TRAIL
+            </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-num">57</div>
+                <div class="stat-label">Total Evidence Items</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Processes Enumerated</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">7</div>
+                <div class="stat-label">Files Discovered & Hashed</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">50</div>
+                <div class="stat-label">Active Sockets Tracked</div>
+            </div>
+        </div>
+
+        <!-- Execution Record Cards -->
+        <div class="grid-2">
+            <div class="card">
+                <h2>🔐 Execution Record</h2>
+                <table class="kv-table">
+                    <tr><td class="kv-key">Case ID</td><td class="kv-val">RANSOMWARE_TRIAGE_042</td></tr>
+                    <tr><td class="kv-key">Execution ID</td><td class="kv-val">EX-20260903-6842</td></tr>
+                    <tr><td class="kv-key">Host Target</td><td class="kv-val">PROD-UBUNTU-01</td></tr>
+                    <tr><td class="kv-key">OS Platform</td><td class="kv-val">Windows 11</td></tr>
+                    <tr><td class="kv-key">Timestamp</td><td class="kv-val">03-09-2026 02:57:36</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>⛓️ Cryptographic Integrity Seal</h2>
+                <table class="kv-table">
+                    <tr><td class="kv-key">Integrity Status</td><td class="kv-val" style="color: var(--green);">[✓ VERIFIED]</td></tr>
+                    <tr><td class="kv-key">Script SHA-256</td><td class="kv-val"><span class="hash-tag">d7d948174000319d83e19f5133bc229b1465121a31dd2e1b5742feed618d29b1</span></td></tr>
+                    <tr><td class="kv-key">Package SHA-256</td><td class="kv-val"><span class="hash-tag">fe4c4926930d84d4579f0dc3ad367940bf930314624096a6b75f7676577e781c</span></td></tr>
+                    <tr><td class="kv-key">Ledger Layer</td><td class="kv-val" style="color: var(--cyan);">Phase 1 (Cryptographic Hash Seal)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Evidence Data Tables -->
+        <div class="card">
+            <h2>📑 Evidence Vault Findings</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('files')">Files (7)</button>
+                <button class="tab-btn" onclick="showTab('procs')">Processes (0)</button>
+                <button class="tab-btn" onclick="showTab('network')">Network (50)</button>
+                <button class="tab-btn" onclick="showTab('chain')">Chain of Custody</button>
+            </div>
+
+            <!-- Files Table -->
+            <div id="tab-files" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Size</th>
+                            <th>Status</th>
+                            <th>SHA-256 Hash</th>
+                            <th>Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>archive.zip</strong></td>
+                            <td>391 B</td>
+                            <td><span style='color:var(--green);'>CLEAN</span></td>
+                            <td><span class="hash-tag">2ad65bc80edb1860eb97d951f29460e0174a7045cf8edfdf76e285a38e34da73</span></td>
+                            <td>2026-09-01T02:22:45.708409</td>
+                        </tr><tr>
+                            <td><strong>beacon_script.ps1</strong></td>
+                            <td>228 B</td>
+                            <td><span class='badge-suspicious'>SUSPICIOUS</span></td>
+                            <td><span class="hash-tag">8c8efa633f3e8ef76b91501c8b7e7b9abb5428dd8de93a9a478aba3797ecdeca</span></td>
+                            <td>2026-09-01T02:22:50.010597</td>
+                        </tr><tr>
+                            <td><strong>notes.txt</strong></td>
+                            <td>186 B</td>
+                            <td><span style='color:var(--green);'>CLEAN</span></td>
+                            <td><span class="hash-tag">ba82cfc1221398159851a8c7a348b14c31edc035724ae4a6fa02a51d367ea45e</span></td>
+                            <td>2026-09-01T02:22:20.932906</td>
+                        </tr><tr>
+                            <td><strong>photo.jpg</strong></td>
+                            <td>481 B</td>
+                            <td><span style='color:var(--green);'>CLEAN</span></td>
+                            <td><span class="hash-tag">3d1640ca8634636e5c9118ba0fba3dfc43162a27629c54d92dfd048596ef61fd</span></td>
+                            <td>2026-09-01T02:22:35.524062</td>
+                        </tr><tr>
+                            <td><strong>ransom_note.txt</strong></td>
+                            <td>264 B</td>
+                            <td><span style='color:var(--green);'>CLEAN</span></td>
+                            <td><span class="hash-tag">1280756ae39c052c89b2a443880deb56e48f3e1e667410f6127c6c70355c20d6</span></td>
+                            <td>2026-09-01T02:22:39.780597</td>
+                        </tr><tr>
+                            <td><strong>report.pdf</strong></td>
+                            <td>313 B</td>
+                            <td><span style='color:var(--green);'>CLEAN</span></td>
+                            <td><span class="hash-tag">472973da5b72a5a06622acc628504fc6d1d12442631ffb6ac147464efb46ed69</span></td>
+                            <td>2026-09-01T02:22:30.371306</td>
+                        </tr><tr>
+                            <td><strong>suspicious.exe</strong></td>
+                            <td>173 B</td>
+                            <td><span class='badge-suspicious'>SUSPICIOUS</span></td>
+                            <td><span class="hash-tag">c54e86f1e25f5d1034d8e0f3468e94626a89aa8d011b0dcec0e0859aa7d3097f</span></td>
+                            <td>2026-09-01T02:22:25.293718</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Processes Table -->
+            <div id="tab-procs" class="table-container" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Process Name</th>
+                            <th>Memory</th>
+                            <th>Status</th>
+                            <th>Binary SHA-256</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5" style="text-align:center; padding:20px;">No processes recorded</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Network Table -->
+            <div id="tab-network" class="table-container" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Proto</th>
+                            <th>Local Socket</th>
+                            <th>Remote Socket</th>
+                            <th>Status</th>
+                            <th>PID</th>
+                            <th>Process</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64383</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>ESTABLISHED</td>
+                            <td>25432</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63283</td>
+                            <td>64:ff9b::a66c:c8af:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>21448</td>
+                            <td>wpscloudsvr.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:54379</td>
+                            <td>166.108.200.175:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>21448</td>
+                            <td>wpscloudsvr.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>23276</td>
+                            <td>Antigravity IDE.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>:::135</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>1084</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>127.0.0.1:64391</td>
+                            <td>ESTABLISHED</td>
+                            <td>23276</td>
+                            <td>Antigravity IDE.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:54631</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>0.0.0.0:57181</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>2488</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:61488</td>
+                            <td>64:ff9b::a66c:c8af:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>32388</td>
+                            <td>wps.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:53935</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>:::53040</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>2488</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>127.0.0.1:64381</td>
+                            <td>ESTABLISHED</td>
+                            <td>23276</td>
+                            <td>Antigravity IDE.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>0.0.0.0:49664</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>1708</td>
+                            <td>lsass.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64374</td>
+                            <td>127.0.0.1:64398</td>
+                            <td>ESTABLISHED</td>
+                            <td>25432</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:53462</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63296</td>
+                            <td>64:ff9b::a66c:c8af:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>28516</td>
+                            <td>wps.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:51919</td>
+                            <td>127.0.0.1:51911</td>
+                            <td>ESTABLISHED</td>
+                            <td>29928</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>fe80::caf5:88eb:5671:5c87:1900</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>8160</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:35045</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>18440</td>
+                            <td>Code.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:58360</td>
+                            <td>2001:4860:4842:400:::443</td>
+                            <td>ESTABLISHED</td>
+                            <td>29928</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:59228</td>
+                            <td>2001:4860:4844:400:::443</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64382</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>ESTABLISHED</td>
+                            <td>25432</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>0.0.0.0:5353</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>7024</td>
+                            <td>msedge.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>127.0.0.1:65089</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>8160</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>10.123.67.228:1900</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>8160</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63294</td>
+                            <td>64:ff9b::a66c:c8af:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>31488</td>
+                            <td>wpspdf.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>:::53533</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>2488</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:49228</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:56061</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>6712</td>
+                            <td>Code.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>127.0.0.1:58357</td>
+                            <td>ESTABLISHED</td>
+                            <td>23276</td>
+                            <td>Antigravity IDE.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:61230</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>:::123</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>5824</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>:::57181</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>2488</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:65019</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>10.123.67.228:137</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>4</td>
+                            <td>System</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:49722</td>
+                            <td>2600:140f:5a00::17d4:3723:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>32340</td>
+                            <td>LockApp.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:51912</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>29928</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>0.0.0.0:65402</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>21448</td>
+                            <td>wpscloudsvr.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>:::49666</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>2520</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:2177</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>12808</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:54665</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:51913</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>29928</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>0.0.0.0:7680</td>
+                            <td>*</td>
+                            <td>LISTEN</td>
+                            <td>3812</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:49275</td>
+                            <td>2606:50c0:8002::154:443</td>
+                            <td>ESTABLISHED</td>
+                            <td>31096</td>
+                            <td>Code.exe</td>
+                        </tr><tr>
+                            <td>UDP</td>
+                            <td>::1:1900</td>
+                            <td>*</td>
+                            <td>NONE</td>
+                            <td>8160</td>
+                            <td>svchost.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:52546</td>
+                            <td>64:ff9b::a66c:c8af:443</td>
+                            <td>CLOSE_WAIT</td>
+                            <td>31488</td>
+                            <td>wpspdf.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>10.123.67.228:50556</td>
+                            <td>10.123.67.143:53</td>
+                            <td>TIME_WAIT</td>
+                            <td>0</td>
+                            <td>system</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:64391</td>
+                            <td>127.0.0.1:64371</td>
+                            <td>ESTABLISHED</td>
+                            <td>25432</td>
+                            <td>language_server_windows_x64.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>127.0.0.1:49675</td>
+                            <td>127.0.0.1:49674</td>
+                            <td>ESTABLISHED</td>
+                            <td>7268</td>
+                            <td>mysqld.exe</td>
+                        </tr><tr>
+                            <td>TCP</td>
+                            <td>2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:52760</td>
+                            <td>2404:6800:4000:1025::bc:5228</td>
+                            <td>ESTABLISHED</td>
+                            <td>17668</td>
+                            <td>chrome.exe</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Chain Table -->
+            <div id="tab-chain" class="table-container" style="display:none;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Category</th>
+                            <th>Timestamp</th>
+                            <th>Item Hash (SHA-256)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>EV-0001</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110305+00:00</td>
+                            <td><span class="hash-tag">f15bb3091242b33360e392ccf93744034786db8029448193e2a78fcf62b1500f</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0002</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110366+00:00</td>
+                            <td><span class="hash-tag">560be4713e36a20119a1c9ef6bbb1499c6ef58d36d18a65ed68f4b0dfef1bc0d</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0003</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110391+00:00</td>
+                            <td><span class="hash-tag">51cb8923a7a5df343aeb18a070b0cd45bd2d40c83d4cb897a01246233ba7b1dd</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0004</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110413+00:00</td>
+                            <td><span class="hash-tag">7f9574c37de5ffc902cebb9addbbdb46cf9e82617f9f5008166886b3ad0713c2</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0005</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110432+00:00</td>
+                            <td><span class="hash-tag">43dccc60bc723e7b514f6dd873b63a0b2412b620d942a6fd25b82be2090a9144</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0006</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110450+00:00</td>
+                            <td><span class="hash-tag">ea68752c52befee8a110b605f291a0cc77206a4c9f07e646b5f420c771aa253a</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0007</strong></td>
+                            <td>FILE</td>
+                            <td>2026-09-02T21:27:36.110467+00:00</td>
+                            <td><span class="hash-tag">63c627ad5e2df900420a2ebafdf159a4e6f9999511a5d603669c939c64bf5763</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0008</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110512+00:00</td>
+                            <td><span class="hash-tag">1f53d806c6f54bc14f7ed69e375cae1f6a558a8751bfeb777d30fb9f1b3d3532</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0009</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110530+00:00</td>
+                            <td><span class="hash-tag">a2504510cc33617d38e81b0e786632f4a92143aa22c8b7f52c0b970532192983</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0010</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110547+00:00</td>
+                            <td><span class="hash-tag">fb76c9d6e119728844d20dc99eb14ca865d0b57bb6d3a0168e4c1848e932d63c</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0011</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110562+00:00</td>
+                            <td><span class="hash-tag">e48af5f1e3549acab07668fa4715d49b16e80a8b468055181c1fb0046811e762</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0012</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110577+00:00</td>
+                            <td><span class="hash-tag">9454af8af1e832f696f24ea08f052914eeb717d881ecd7e6fedc1b1b3654bd9f</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0013</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110591+00:00</td>
+                            <td><span class="hash-tag">1d7c723653d9923cbff44384f7800ff49919e2d5574fb4cd772f55397facbfca</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0014</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110605+00:00</td>
+                            <td><span class="hash-tag">0988e4b08f92351868420827c1bc71d3658567deeb978d4cbd01c885944e2d07</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0015</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110619+00:00</td>
+                            <td><span class="hash-tag">9d622adc34ab57357f9535db372904ee1bbd61ebab6e87a3cf00ab0b1726f243</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0016</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110633+00:00</td>
+                            <td><span class="hash-tag">9dcd56711411e46534dc6bf1509a6e2f339f31515fc303b53853a5d1a3ed0a4c</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0017</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110647+00:00</td>
+                            <td><span class="hash-tag">31ed1bbc00934acde178bf7ee502d3d1efb0d8f3f11674b40029e3e30cd284cc</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0018</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110661+00:00</td>
+                            <td><span class="hash-tag">c44a7c43d1c962981407daf4fcb3e435304fab976f84ada41c385bdffc8c0678</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0019</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110675+00:00</td>
+                            <td><span class="hash-tag">d40b103f097ef4d37421fa07fc2c982abeabf07967562617aa88b77806565088</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0020</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110689+00:00</td>
+                            <td><span class="hash-tag">56b67b5fd1a5c2d566fc095c5003b3c025b0874ef012f377a7ed80f3b3ae35d6</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0021</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110703+00:00</td>
+                            <td><span class="hash-tag">8d255ff52cd98097a8175aff9e57820ddafa372ff14a90ceaaf525ed6d1cec18</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0022</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110717+00:00</td>
+                            <td><span class="hash-tag">a9b1c53c5e601ea498888d5500d527e1a27c9cd33bb3623f1a873bbeced84661</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0023</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110731+00:00</td>
+                            <td><span class="hash-tag">4973d51ae43fb3315892af6003cf735c0cf0025b09f32c8b81452e490564178c</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0024</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110745+00:00</td>
+                            <td><span class="hash-tag">80cdf4198ffb2fa2c854055a3af897da7cb33cec95583d57d07cd6c6c036f074</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0025</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110759+00:00</td>
+                            <td><span class="hash-tag">18f41d330640cc45739f2497f6adb5c882c27201d3b53efdd62dd97be3a8ca48</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0026</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110773+00:00</td>
+                            <td><span class="hash-tag">44060cd95be6188d31f56c763dcbbf023971685b95917c0bbd3ca1908f478287</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0027</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110787+00:00</td>
+                            <td><span class="hash-tag">b2698b5e7d434c5e14308acc583ddf89f5352206b8281690bd0231cbd8f9adb6</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0028</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110801+00:00</td>
+                            <td><span class="hash-tag">d39f288bf56b1922c66a734149022106d3254d0ed4057012ed533e3926ffc949</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0029</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110815+00:00</td>
+                            <td><span class="hash-tag">e76d77024b2725aca1e2da7096e2b9273c3e059df7adea3e770d908aafa6deb8</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0030</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110828+00:00</td>
+                            <td><span class="hash-tag">2adc27a84352841daaf2b02c01053a1f8c5ff345e7b951acc3cd2a1ae72f48db</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0031</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110842+00:00</td>
+                            <td><span class="hash-tag">42b3ffd19998420c14b8b589d5867ef2a446c155616e6880dbf63dd58373e1a9</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0032</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110855+00:00</td>
+                            <td><span class="hash-tag">c9bd3cc8f03ef3d2342a2ad0a613608693bf259a284a4aee06e74144afb2d980</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0033</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110869+00:00</td>
+                            <td><span class="hash-tag">0a82f495214fee1abfea1c60d4bc68734783d763b20b5a60f00cf41bb5bcc572</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0034</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110882+00:00</td>
+                            <td><span class="hash-tag">97679000c26a403b6d3b7c18a8a42ce431e19331bd58f72259ebcdafb7d17b69</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0035</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110896+00:00</td>
+                            <td><span class="hash-tag">7d72700ed524b2248147a45786b6fa308a829ad0db7344dab03c311433ffedd8</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0036</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110910+00:00</td>
+                            <td><span class="hash-tag">371a4872da43c19225b1a0afb8b6d1998927b5c5077ef226fdb1647bce0e9ca0</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0037</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110923+00:00</td>
+                            <td><span class="hash-tag">143fcb4428df36f286b98d55acad2de6cce715af48624ecc535f2d8afd82a54b</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0038</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110937+00:00</td>
+                            <td><span class="hash-tag">bab09284bb4b75404febca9dedcb759efeffdd5f125cedd9cc10b14ff0204595</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0039</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110951+00:00</td>
+                            <td><span class="hash-tag">6a486cde3d04fa2aee80acd26d5d3567bf1cf27f0c532cd97135faca5782a426</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0040</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110964+00:00</td>
+                            <td><span class="hash-tag">da715761f5bc2b58c311f8ff3d7f4a7f9d697e20344089aca809ad08e30f0161</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0041</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110978+00:00</td>
+                            <td><span class="hash-tag">46457d39870e34c311eb313b9e8b4f3c30ac40474211d8b71a65615a7395fda3</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0042</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.110991+00:00</td>
+                            <td><span class="hash-tag">33a0e9b024fa661c50978069d0d075c8c84665d0cb0a167a89b948cca6f2aa4b</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0043</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111004+00:00</td>
+                            <td><span class="hash-tag">b1d9e4312a9ed659bcdeaf939410222ea8ada827f45f8d4c6b06ccd2830f2a69</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0044</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111018+00:00</td>
+                            <td><span class="hash-tag">ad57cf2885b01763bdc0279c4c1ad3243813d6deec969ad4b5cb0265b797277c</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0045</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111031+00:00</td>
+                            <td><span class="hash-tag">0e2b5de503ae0711dddc1f63721002cd464b18f0180aee3f926b3fae5de5de0d</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0046</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111045+00:00</td>
+                            <td><span class="hash-tag">b9c93326d79fc28864573e24cd39eb127c6fcbc2a0c70bc6763b5ef3b71407ee</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0047</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111114+00:00</td>
+                            <td><span class="hash-tag">9c0199ad41146c730cccef060bb5aeea1838abd53d0b183790d21bb48839949a</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0048</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111136+00:00</td>
+                            <td><span class="hash-tag">ab2b88f8bfcf32e2dafcaf161677dae531f5047d992116e7b30e4c480a69ac15</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0049</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111158+00:00</td>
+                            <td><span class="hash-tag">b04be7f0533d67569dd22970f821e25f32cbcc1d2b4456de7eb5844fdd39ece5</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0050</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111180+00:00</td>
+                            <td><span class="hash-tag">b6376a074a8c69b51bfdf9e0ee2d40b4f4aa356a24db7049bbf895fb0adcd212</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0051</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111201+00:00</td>
+                            <td><span class="hash-tag">564bd4acec3ff6c0f320aaf3981844a62a85827b92195bd53c46e3313b18a86e</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0052</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111224+00:00</td>
+                            <td><span class="hash-tag">ae00267a4bc7be1b3cb7fdeb080936cd6e0c6dc8978dce6536fc206ae00b4116</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0053</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111245+00:00</td>
+                            <td><span class="hash-tag">7007d31fd55c8018f628e96e15c78a1842f836fe4f07769033078e44e4c405b8</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0054</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111266+00:00</td>
+                            <td><span class="hash-tag">1e19b281ba1091b1d987849960232d91e5c2dcabf2f14582917b089c12cc4462</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0055</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111287+00:00</td>
+                            <td><span class="hash-tag">06e6b14467aa9eaf08fcc2dab53edffaae4bbb051e45100a6576481a6fac8237</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0056</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111308+00:00</td>
+                            <td><span class="hash-tag">ae0d1d4ed401c7e457c14ccc06e8436d5a12c9acd90b103be13c9c3e0a294dd6</span></td>
+                        </tr><tr>
+                            <td><strong>EV-0057</strong></td>
+                            <td>NETWORK_CONNECTION</td>
+                            <td>2026-09-02T21:27:36.111330+00:00</td>
+                            <td><span class="hash-tag">47059398577f217d6970294e98f7aa743cebae3fd1f324032ed3ec9cf75c0150</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Generated automatically by JOCKY Forensic Script Engine v0.1 • Tamper-evident evidence chain verified.
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.getElementById('tab-files').style.display = 'none';
+            document.getElementById('tab-procs').style.display = 'none';
+            document.getElementById('tab-network').style.display = 'none';
+            document.getElementById('tab-chain').style.display = 'none';
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

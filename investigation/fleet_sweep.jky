@@ -1,0 +1,11 @@
+# JOCKY Forensic Script - Enterprise Multi-Host Sweep
+CASE "DISTRIBUTED_PERSISTENCE_SWEEP"
+
+processes = host.processes()
+files = host.files.search("./investigation/evidence")
+
+evidence.add(processes)
+evidence.add(files)
+evidence.hash()
+
+report.generate()

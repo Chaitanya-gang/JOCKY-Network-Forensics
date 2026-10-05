@@ -1,0 +1,893 @@
+{
+  "execution_record": {
+    "case_id": "RANSOMWARE_TRIAGE_042",
+    "execution_id": "EX-20260903-6842",
+    "host": "PROD-UBUNTU-01",
+    "platform": "Windows 11",
+    "script_hash": "d7d948174000319d83e19f5133bc229b1465121a31dd2e1b5742feed618d29b1",
+    "evidence_hash": "fe4c4926930d84d4579f0dc3ad367940bf930314624096a6b75f7676577e781c",
+    "total_items": 57,
+    "timestamp": "03-09-2026 02:57:36",
+    "timestamp_iso": "2026-09-02T21:27:36.111782+00:00",
+    "status": "VERIFIED"
+  },
+  "items_count": 57,
+  "evidence_items": [
+    {
+      "item_id": "EV-0001",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "archive.zip",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\archive.zip",
+        "extension": ".zip",
+        "size_bytes": 391,
+        "created": "2026-09-01T02:22:45.703593",
+        "modified": "2026-09-01T02:22:45.708409",
+        "sha256": "2ad65bc80edb1860eb97d951f29460e0174a7045cf8edfdf76e285a38e34da73",
+        "md5": "",
+        "is_suspicious": false
+      },
+      "timestamp": "2026-09-02T21:27:36.110305+00:00",
+      "item_hash": "f15bb3091242b33360e392ccf93744034786db8029448193e2a78fcf62b1500f"
+    },
+    {
+      "item_id": "EV-0002",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "beacon_script.ps1",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\beacon_script.ps1",
+        "extension": ".ps1",
+        "size_bytes": 228,
+        "created": "2026-09-01T02:22:50.009417",
+        "modified": "2026-09-01T02:22:50.010597",
+        "sha256": "8c8efa633f3e8ef76b91501c8b7e7b9abb5428dd8de93a9a478aba3797ecdeca",
+        "md5": "",
+        "is_suspicious": true
+      },
+      "timestamp": "2026-09-02T21:27:36.110366+00:00",
+      "item_hash": "560be4713e36a20119a1c9ef6bbb1499c6ef58d36d18a65ed68f4b0dfef1bc0d"
+    },
+    {
+      "item_id": "EV-0003",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "notes.txt",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\notes.txt",
+        "extension": ".txt",
+        "size_bytes": 186,
+        "created": "2026-09-01T02:22:20.932320",
+        "modified": "2026-09-01T02:22:20.932906",
+        "sha256": "ba82cfc1221398159851a8c7a348b14c31edc035724ae4a6fa02a51d367ea45e",
+        "md5": "",
+        "is_suspicious": false
+      },
+      "timestamp": "2026-09-02T21:27:36.110391+00:00",
+      "item_hash": "51cb8923a7a5df343aeb18a070b0cd45bd2d40c83d4cb897a01246233ba7b1dd"
+    },
+    {
+      "item_id": "EV-0004",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "photo.jpg",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\photo.jpg",
+        "extension": ".jpg",
+        "size_bytes": 481,
+        "created": "2026-09-01T02:22:35.522204",
+        "modified": "2026-09-01T02:22:35.524062",
+        "sha256": "3d1640ca8634636e5c9118ba0fba3dfc43162a27629c54d92dfd048596ef61fd",
+        "md5": "",
+        "is_suspicious": false
+      },
+      "timestamp": "2026-09-02T21:27:36.110413+00:00",
+      "item_hash": "7f9574c37de5ffc902cebb9addbbdb46cf9e82617f9f5008166886b3ad0713c2"
+    },
+    {
+      "item_id": "EV-0005",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "ransom_note.txt",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\ransom_note.txt",
+        "extension": ".txt",
+        "size_bytes": 264,
+        "created": "2026-09-01T02:22:39.780055",
+        "modified": "2026-09-01T02:22:39.780597",
+        "sha256": "1280756ae39c052c89b2a443880deb56e48f3e1e667410f6127c6c70355c20d6",
+        "md5": "",
+        "is_suspicious": false
+      },
+      "timestamp": "2026-09-02T21:27:36.110432+00:00",
+      "item_hash": "43dccc60bc723e7b514f6dd873b63a0b2412b620d942a6fd25b82be2090a9144"
+    },
+    {
+      "item_id": "EV-0006",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "report.pdf",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\report.pdf",
+        "extension": ".pdf",
+        "size_bytes": 313,
+        "created": "2026-09-01T02:22:30.370581",
+        "modified": "2026-09-01T02:22:30.371306",
+        "sha256": "472973da5b72a5a06622acc628504fc6d1d12442631ffb6ac147464efb46ed69",
+        "md5": "",
+        "is_suspicious": false
+      },
+      "timestamp": "2026-09-02T21:27:36.110450+00:00",
+      "item_hash": "ea68752c52befee8a110b605f291a0cc77206a4c9f07e646b5f420c771aa253a"
+    },
+    {
+      "item_id": "EV-0007",
+      "category": "file",
+      "data": {
+        "type": "file",
+        "name": "suspicious.exe",
+        "path": "d:\\SIH_2026\\PS_26148 _NetworkForensics\\investigation\\evidence\\suspicious.exe",
+        "extension": ".exe",
+        "size_bytes": 173,
+        "created": "2026-09-01T02:22:25.292064",
+        "modified": "2026-09-01T02:22:25.293718",
+        "sha256": "c54e86f1e25f5d1034d8e0f3468e94626a89aa8d011b0dcec0e0859aa7d3097f",
+        "md5": "",
+        "is_suspicious": true
+      },
+      "timestamp": "2026-09-02T21:27:36.110467+00:00",
+      "item_hash": "63c627ad5e2df900420a2ebafdf159a4e6f9999511a5d603669c939c64bf5763"
+    },
+    {
+      "item_id": "EV-0008",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64383",
+        "remote_address": "127.0.0.1:64371",
+        "status": "ESTABLISHED",
+        "pid": 25432,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110512+00:00",
+      "item_hash": "1f53d806c6f54bc14f7ed69e375cae1f6a558a8751bfeb777d30fb9f1b3d3532"
+    },
+    {
+      "item_id": "EV-0009",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63283",
+        "remote_address": "64:ff9b::a66c:c8af:443",
+        "status": "CLOSE_WAIT",
+        "pid": 21448,
+        "process_name": "wpscloudsvr.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110530+00:00",
+      "item_hash": "a2504510cc33617d38e81b0e786632f4a92143aa22c8b7f52c0b970532192983"
+    },
+    {
+      "item_id": "EV-0010",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:54379",
+        "remote_address": "166.108.200.175:443",
+        "status": "CLOSE_WAIT",
+        "pid": 21448,
+        "process_name": "wpscloudsvr.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110547+00:00",
+      "item_hash": "fb76c9d6e119728844d20dc99eb14ca865d0b57bb6d3a0168e4c1848e932d63c"
+    },
+    {
+      "item_id": "EV-0011",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64371",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 23276,
+        "process_name": "Antigravity IDE.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110562+00:00",
+      "item_hash": "e48af5f1e3549acab07668fa4715d49b16e80a8b468055181c1fb0046811e762"
+    },
+    {
+      "item_id": "EV-0012",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": ":::135",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 1084,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110577+00:00",
+      "item_hash": "9454af8af1e832f696f24ea08f052914eeb717d881ecd7e6fedc1b1b3654bd9f"
+    },
+    {
+      "item_id": "EV-0013",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64371",
+        "remote_address": "127.0.0.1:64391",
+        "status": "ESTABLISHED",
+        "pid": 23276,
+        "process_name": "Antigravity IDE.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110591+00:00",
+      "item_hash": "1d7c723653d9923cbff44384f7800ff49919e2d5574fb4cd772f55397facbfca"
+    },
+    {
+      "item_id": "EV-0014",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:54631",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110605+00:00",
+      "item_hash": "0988e4b08f92351868420827c1bc71d3658567deeb978d4cbd01c885944e2d07"
+    },
+    {
+      "item_id": "EV-0015",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "0.0.0.0:57181",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 2488,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110619+00:00",
+      "item_hash": "9d622adc34ab57357f9535db372904ee1bbd61ebab6e87a3cf00ab0b1726f243"
+    },
+    {
+      "item_id": "EV-0016",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:61488",
+        "remote_address": "64:ff9b::a66c:c8af:443",
+        "status": "CLOSE_WAIT",
+        "pid": 32388,
+        "process_name": "wps.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110633+00:00",
+      "item_hash": "9dcd56711411e46534dc6bf1509a6e2f339f31515fc303b53853a5d1a3ed0a4c"
+    },
+    {
+      "item_id": "EV-0017",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:53935",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110647+00:00",
+      "item_hash": "31ed1bbc00934acde178bf7ee502d3d1efb0d8f3f11674b40029e3e30cd284cc"
+    },
+    {
+      "item_id": "EV-0018",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": ":::53040",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 2488,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110661+00:00",
+      "item_hash": "c44a7c43d1c962981407daf4fcb3e435304fab976f84ada41c385bdffc8c0678"
+    },
+    {
+      "item_id": "EV-0019",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64371",
+        "remote_address": "127.0.0.1:64381",
+        "status": "ESTABLISHED",
+        "pid": 23276,
+        "process_name": "Antigravity IDE.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110675+00:00",
+      "item_hash": "d40b103f097ef4d37421fa07fc2c982abeabf07967562617aa88b77806565088"
+    },
+    {
+      "item_id": "EV-0020",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "0.0.0.0:49664",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 1708,
+        "process_name": "lsass.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110689+00:00",
+      "item_hash": "56b67b5fd1a5c2d566fc095c5003b3c025b0874ef012f377a7ed80f3b3ae35d6"
+    },
+    {
+      "item_id": "EV-0021",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64374",
+        "remote_address": "127.0.0.1:64398",
+        "status": "ESTABLISHED",
+        "pid": 25432,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110703+00:00",
+      "item_hash": "8d255ff52cd98097a8175aff9e57820ddafa372ff14a90ceaaf525ed6d1cec18"
+    },
+    {
+      "item_id": "EV-0022",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:53462",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110717+00:00",
+      "item_hash": "a9b1c53c5e601ea498888d5500d527e1a27c9cd33bb3623f1a873bbeced84661"
+    },
+    {
+      "item_id": "EV-0023",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63296",
+        "remote_address": "64:ff9b::a66c:c8af:443",
+        "status": "CLOSE_WAIT",
+        "pid": 28516,
+        "process_name": "wps.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110731+00:00",
+      "item_hash": "4973d51ae43fb3315892af6003cf735c0cf0025b09f32c8b81452e490564178c"
+    },
+    {
+      "item_id": "EV-0024",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:51919",
+        "remote_address": "127.0.0.1:51911",
+        "status": "ESTABLISHED",
+        "pid": 29928,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110745+00:00",
+      "item_hash": "80cdf4198ffb2fa2c854055a3af897da7cb33cec95583d57d07cd6c6c036f074"
+    },
+    {
+      "item_id": "EV-0025",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "fe80::caf5:88eb:5671:5c87:1900",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 8160,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110759+00:00",
+      "item_hash": "18f41d330640cc45739f2497f6adb5c882c27201d3b53efdd62dd97be3a8ca48"
+    },
+    {
+      "item_id": "EV-0026",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:35045",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 18440,
+        "process_name": "Code.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110773+00:00",
+      "item_hash": "44060cd95be6188d31f56c763dcbbf023971685b95917c0bbd3ca1908f478287"
+    },
+    {
+      "item_id": "EV-0027",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:58360",
+        "remote_address": "2001:4860:4842:400:::443",
+        "status": "ESTABLISHED",
+        "pid": 29928,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110787+00:00",
+      "item_hash": "b2698b5e7d434c5e14308acc583ddf89f5352206b8281690bd0231cbd8f9adb6"
+    },
+    {
+      "item_id": "EV-0028",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:59228",
+        "remote_address": "2001:4860:4844:400:::443",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110801+00:00",
+      "item_hash": "d39f288bf56b1922c66a734149022106d3254d0ed4057012ed533e3926ffc949"
+    },
+    {
+      "item_id": "EV-0029",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64382",
+        "remote_address": "127.0.0.1:64371",
+        "status": "ESTABLISHED",
+        "pid": 25432,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110815+00:00",
+      "item_hash": "e76d77024b2725aca1e2da7096e2b9273c3e059df7adea3e770d908aafa6deb8"
+    },
+    {
+      "item_id": "EV-0030",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "0.0.0.0:5353",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 7024,
+        "process_name": "msedge.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110828+00:00",
+      "item_hash": "2adc27a84352841daaf2b02c01053a1f8c5ff345e7b951acc3cd2a1ae72f48db"
+    },
+    {
+      "item_id": "EV-0031",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "127.0.0.1:65089",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 8160,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110842+00:00",
+      "item_hash": "42b3ffd19998420c14b8b589d5867ef2a446c155616e6880dbf63dd58373e1a9"
+    },
+    {
+      "item_id": "EV-0032",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "10.123.67.228:1900",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 8160,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110855+00:00",
+      "item_hash": "c9bd3cc8f03ef3d2342a2ad0a613608693bf259a284a4aee06e74144afb2d980"
+    },
+    {
+      "item_id": "EV-0033",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:63294",
+        "remote_address": "64:ff9b::a66c:c8af:443",
+        "status": "CLOSE_WAIT",
+        "pid": 31488,
+        "process_name": "wpspdf.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110869+00:00",
+      "item_hash": "0a82f495214fee1abfea1c60d4bc68734783d763b20b5a60f00cf41bb5bcc572"
+    },
+    {
+      "item_id": "EV-0034",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": ":::53533",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 2488,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110882+00:00",
+      "item_hash": "97679000c26a403b6d3b7c18a8a42ce431e19331bd58f72259ebcdafb7d17b69"
+    },
+    {
+      "item_id": "EV-0035",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:49228",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110896+00:00",
+      "item_hash": "7d72700ed524b2248147a45786b6fa308a829ad0db7344dab03c311433ffedd8"
+    },
+    {
+      "item_id": "EV-0036",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:56061",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 6712,
+        "process_name": "Code.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110910+00:00",
+      "item_hash": "371a4872da43c19225b1a0afb8b6d1998927b5c5077ef226fdb1647bce0e9ca0"
+    },
+    {
+      "item_id": "EV-0037",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64371",
+        "remote_address": "127.0.0.1:58357",
+        "status": "ESTABLISHED",
+        "pid": 23276,
+        "process_name": "Antigravity IDE.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110923+00:00",
+      "item_hash": "143fcb4428df36f286b98d55acad2de6cce715af48624ecc535f2d8afd82a54b"
+    },
+    {
+      "item_id": "EV-0038",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:61230",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110937+00:00",
+      "item_hash": "bab09284bb4b75404febca9dedcb759efeffdd5f125cedd9cc10b14ff0204595"
+    },
+    {
+      "item_id": "EV-0039",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": ":::123",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 5824,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110951+00:00",
+      "item_hash": "6a486cde3d04fa2aee80acd26d5d3567bf1cf27f0c532cd97135faca5782a426"
+    },
+    {
+      "item_id": "EV-0040",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": ":::57181",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 2488,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.110964+00:00",
+      "item_hash": "da715761f5bc2b58c311f8ff3d7f4a7f9d697e20344089aca809ad08e30f0161"
+    },
+    {
+      "item_id": "EV-0041",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:65019",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.110978+00:00",
+      "item_hash": "46457d39870e34c311eb313b9e8b4f3c30ac40474211d8b71a65615a7395fda3"
+    },
+    {
+      "item_id": "EV-0042",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "10.123.67.228:137",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 4,
+        "process_name": "System"
+      },
+      "timestamp": "2026-09-02T21:27:36.110991+00:00",
+      "item_hash": "33a0e9b024fa661c50978069d0d075c8c84665d0cb0a167a89b948cca6f2aa4b"
+    },
+    {
+      "item_id": "EV-0043",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:49722",
+        "remote_address": "2600:140f:5a00::17d4:3723:443",
+        "status": "CLOSE_WAIT",
+        "pid": 32340,
+        "process_name": "LockApp.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111004+00:00",
+      "item_hash": "b1d9e4312a9ed659bcdeaf939410222ea8ada827f45f8d4c6b06ccd2830f2a69"
+    },
+    {
+      "item_id": "EV-0044",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:51912",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 29928,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111018+00:00",
+      "item_hash": "ad57cf2885b01763bdc0279c4c1ad3243813d6deec969ad4b5cb0265b797277c"
+    },
+    {
+      "item_id": "EV-0045",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "0.0.0.0:65402",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 21448,
+        "process_name": "wpscloudsvr.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111031+00:00",
+      "item_hash": "0e2b5de503ae0711dddc1f63721002cd464b18f0180aee3f926b3fae5de5de0d"
+    },
+    {
+      "item_id": "EV-0046",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": ":::49666",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 2520,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111045+00:00",
+      "item_hash": "b9c93326d79fc28864573e24cd39eb127c6fcbc2a0c70bc6763b5ef3b71407ee"
+    },
+    {
+      "item_id": "EV-0047",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:2177",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 12808,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111114+00:00",
+      "item_hash": "9c0199ad41146c730cccef060bb5aeea1838abd53d0b183790d21bb48839949a"
+    },
+    {
+      "item_id": "EV-0048",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:54665",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.111136+00:00",
+      "item_hash": "ab2b88f8bfcf32e2dafcaf161677dae531f5047d992116e7b30e4c480a69ac15"
+    },
+    {
+      "item_id": "EV-0049",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:51913",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 29928,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111158+00:00",
+      "item_hash": "b04be7f0533d67569dd22970f821e25f32cbcc1d2b4456de7eb5844fdd39ece5"
+    },
+    {
+      "item_id": "EV-0050",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "0.0.0.0:7680",
+        "remote_address": "",
+        "status": "LISTEN",
+        "pid": 3812,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111180+00:00",
+      "item_hash": "b6376a074a8c69b51bfdf9e0ee2d40b4f4aa356a24db7049bbf895fb0adcd212"
+    },
+    {
+      "item_id": "EV-0051",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:49275",
+        "remote_address": "2606:50c0:8002::154:443",
+        "status": "ESTABLISHED",
+        "pid": 31096,
+        "process_name": "Code.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111201+00:00",
+      "item_hash": "564bd4acec3ff6c0f320aaf3981844a62a85827b92195bd53c46e3313b18a86e"
+    },
+    {
+      "item_id": "EV-0052",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "UDP",
+        "local_address": "::1:1900",
+        "remote_address": "",
+        "status": "NONE",
+        "pid": 8160,
+        "process_name": "svchost.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111224+00:00",
+      "item_hash": "ae00267a4bc7be1b3cb7fdeb080936cd6e0c6dc8978dce6536fc206ae00b4116"
+    },
+    {
+      "item_id": "EV-0053",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:52546",
+        "remote_address": "64:ff9b::a66c:c8af:443",
+        "status": "CLOSE_WAIT",
+        "pid": 31488,
+        "process_name": "wpspdf.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111245+00:00",
+      "item_hash": "7007d31fd55c8018f628e96e15c78a1842f836fe4f07769033078e44e4c405b8"
+    },
+    {
+      "item_id": "EV-0054",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "10.123.67.228:50556",
+        "remote_address": "10.123.67.143:53",
+        "status": "TIME_WAIT",
+        "pid": 0,
+        "process_name": "system"
+      },
+      "timestamp": "2026-09-02T21:27:36.111266+00:00",
+      "item_hash": "1e19b281ba1091b1d987849960232d91e5c2dcabf2f14582917b089c12cc4462"
+    },
+    {
+      "item_id": "EV-0055",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:64391",
+        "remote_address": "127.0.0.1:64371",
+        "status": "ESTABLISHED",
+        "pid": 25432,
+        "process_name": "language_server_windows_x64.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111287+00:00",
+      "item_hash": "06e6b14467aa9eaf08fcc2dab53edffaae4bbb051e45100a6576481a6fac8237"
+    },
+    {
+      "item_id": "EV-0056",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "127.0.0.1:49675",
+        "remote_address": "127.0.0.1:49674",
+        "status": "ESTABLISHED",
+        "pid": 7268,
+        "process_name": "mysqld.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111308+00:00",
+      "item_hash": "ae0d1d4ed401c7e457c14ccc06e8436d5a12c9acd90b103be13c9c3e0a294dd6"
+    },
+    {
+      "item_id": "EV-0057",
+      "category": "network_connection",
+      "data": {
+        "type": "network_connection",
+        "protocol": "TCP",
+        "local_address": "2409:40c2:116e:495:e5a0:d0e7:6eb:cfe5:52760",
+        "remote_address": "2404:6800:4000:1025::bc:5228",
+        "status": "ESTABLISHED",
+        "pid": 17668,
+        "process_name": "chrome.exe"
+      },
+      "timestamp": "2026-09-02T21:27:36.111330+00:00",
+      "item_hash": "47059398577f217d6970294e98f7aa743cebae3fd1f324032ed3ec9cf75c0150"
+    }
+  ]
+}

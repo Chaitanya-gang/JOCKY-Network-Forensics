@@ -1,0 +1,24 @@
+# JOCKY Forensic Script - Core Incident Triage
+# Case: INCIDENT_001
+
+CASE "INCIDENT_001"
+
+# 1. Enumerate active processes
+processes = host.processes()
+
+# 2. Discover and hash evidence files
+files = host.files.search("./investigation/evidence")
+
+# 3. Inspect network sockets
+connections = host.network.connections()
+
+# 4. Ingest findings into cryptographically sealed Evidence Vault
+evidence.add(processes)
+evidence.add(files)
+evidence.add(connections)
+
+# 5. Compute deterministic package SHA-256 hash
+evidence.hash()
+
+# 6. Generate multi-format forensic reports
+report.generate()
